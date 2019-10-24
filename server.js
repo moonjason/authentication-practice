@@ -3,14 +3,20 @@ const app = express();
 const session = require('express-session');
 require('./db/db');
 
+
+app.set('view engine', 'ejs');
 app.use(session({
     secret: 'this is a random secret string',
     resave: false,
     saveUninitialized: false
 }));
 
-app.use(methodOverride('_method'));
+// app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: false}));
+
+const usersController = require('./controllers/users.js');
+app.use('/auth', usersController)
+
 
 app.get('/', (req, res) => {
     console.log(req.session, 'home route');
